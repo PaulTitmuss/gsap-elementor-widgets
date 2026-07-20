@@ -1034,6 +1034,7 @@
                         var stage = el.querySelector( '.gsap-ew-herobento-stage' );
                         var grid = el.querySelector( '.gsap-ew-herobento-grid' );
                         var hero = el.querySelector( '.gsap-ew-herobento-hero' );
+                        var content = el.querySelector( '.gsap-ew-herobento-content' );
                         var items = el.querySelectorAll( '.gsap-ew-herobento-item' );
                         if ( ! stage || ! grid || ! hero ) {
                                 return;
@@ -1042,6 +1043,16 @@
                         var ease = cfg.easing || 'power2.out';
                         var scrollLen = typeof cfg.scrollLength === 'number' ? cfg.scrollLength : 160;
 
+                        // Defensive cleanup: kill any ScrollTrigger already bound to this
+                        // stage so re-initialisation can never stack a second pin.
+                        if ( GSAPEW.hasScrollTrigger() ) {
+                                window.ScrollTrigger.getAll().forEach( function ( st ) {
+                                        if ( st.trigger === stage ) {
+                                                st.kill( true );
+                                        }
+                                } );
+                        }
+
                         // Respect reduced-motion and missing ScrollTrigger: show the
                         // final grid layout without any scroll effect.
                         var reduceMotion = window.matchMedia && window.matchMedia( '(prefers-reduced-motion: reduce)' ).matches;
@@ -1049,6 +1060,9 @@
 
                         if ( reduceMotion || editMode || ! GSAPEW.hasScrollTrigger() ) {
                                 gsap.set( hero, { clearProps: 'transform' } );
+                                if ( content ) {
+                                        gsap.set( content, { clearProps: 'transform' } );
+                                }
                                 gsap.set( items, { opacity: 1, scale: 1, y: 0 } );
                                 return;
                         }
@@ -1078,6 +1092,9 @@
                         };
 
                         gsap.set( hero, { transformOrigin: 'center center', zIndex: 5, willChange: 'transform' } );
+                        if ( content ) {
+                                gsap.set( content, { transformOrigin: 'center center' } );
+                        }
 
                         var tl = gsap.timeline( {
                                 scrollTrigger: {
@@ -1103,6 +1120,24 @@
                                 { x: 0, y: 0, scale: 1, ease: 'none' },
                                 0
                         );
+
+                        // Counter-scale the hero content by the inverse of the hero's
+                        // scale so the heading / button stay a readable, roughly constant
+                        // size (rather than ballooning to 2-3x while the hero is full
+                        // screen) and remain centred instead of being clipped off-edge.
+                        if ( content ) {
+                                tl.fromTo(
+                                        content,
+                                        {
+                                                scale: function () {
+                                                        var s = compute().scale;
+                                                        return s ? ( 1 / s ) : 1;
+                                                },
+                                        },
+                                        { scale: 1, ease: 'none' },
+                                        0
+                                );
+                        }
 
                         if ( items.length ) {
                                 tl.fromTo(
@@ -1157,12 +1192,22 @@
                                         'frontend/element_ready/' + type + '.default',
                                         function ( $scope ) {
                                                 var scopeEl = $scope && $scope[ 0 ] ? $scope[ 0 ] : document;
-                                                // Reset init flag inside the editor so re-edits re-animate.
-                                                var nodes = scopeEl.querySelectorAll( '[data-gsap-type]' );
-                                                nodes.forEach( function ( n ) {
-                                                        n.removeAttribute( 'data-gsap-init' );
-                                                        n.removeAttribute( 'data-gsap-split' );
-                                                } );
+                                                var isEdit = window.elementorFrontend &&
+                                                        typeof window.elementorFrontend.isEditMode === 'function' &&
+                                                        window.elementorFrontend.isEditMode();
+                                                // Only reset the init flag inside the Elementor editor so re-edits
+                                                // re-animate. On the live front end the DOMContentLoaded pass has
+                                                // already initialised each widget, and resetting here would create
+                                                // duplicate tweens / ScrollTriggers (e.g. double-pinning the Hero
+                                                // to Bento widget), so we leave the flags alone and initAll() will
+                                                // simply skip any node already marked as initialised.
+                                                if ( isEdit ) {
+                                                        var nodes = scopeEl.querySelectorAll( '[data-gsap-type]' );
+                                                        nodes.forEach( function ( n ) {
+                                                                n.removeAttribute( 'data-gsap-init' );
+                                                                n.removeAttribute( 'data-gsap-split' );
+                                                        } );
+                                                }
                                                 GSAPEW.initAll( scopeEl );
                                                 if ( typeof window.ScrollTrigger !== 'undefined' ) {
                                                         window.ScrollTrigger.refresh();

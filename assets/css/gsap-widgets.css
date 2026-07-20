@@ -494,7 +494,8 @@
 .gsap-ew-herobento-hero {
         position: relative;
         display: flex;
-        align-items: flex-end;
+        align-items: center;
+        justify-content: center;
         overflow: hidden;
         border-radius: 14px;
         min-height: 0;
@@ -526,6 +527,8 @@
         z-index: 2;
         padding: 6% 7%;
         max-width: 640px;
+        text-align: center;
+        will-change: transform;
 }
 
 .gsap-ew-herobento-heading {

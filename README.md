@@ -2,7 +2,7 @@
 
 Adds **10 GSAP-powered Elementor widgets** with full **no-code** controls (dropdowns, sliders, toggles) right in the Elementor panel. Built for **Elementor / Elementor Pro 3.x – 4.x**.
 
-- **Version:** 1.2.0
+- **Version:** 1.2.1
 - **Requires WordPress:** 6.0+
 - **Requires PHP:** 7.4+
 - **Requires Plugins:** Elementor (3.0.0+)
@@ -195,6 +195,11 @@ Only if you enable the **Repeat On Every Scroll** toggle on that widget. Otherwi
 ---
 
 ## Changelog
+
+### 1.2.1
+- Fixed **Hero to Bento Scroll** not working on the live site: on the front end the widget was being initialised twice, creating a second scroll-lock (pin) on the same hero. The two stacked pins broke the scroll maths and made the page jump straight past the section. It now initialises once and scrolls smoothly.
+- The hero heading / sub-heading / button are now **centred** and stay a readable size as the hero scales, instead of sliding off the left edge.
+- The **GSAP Animations** category is now reliably forced to the **very top** of the Elementor widget panel, even when Elementor Pro and add-on packs (e.g. Ultimate Addons) are active.
 
 ### 1.2.0
 - Added a new **Hero to Bento Scroll** widget — a pinned full-screen hero (video / image / colour) that shrinks into a bento grid of cards on scroll, inspired by elementor.com.

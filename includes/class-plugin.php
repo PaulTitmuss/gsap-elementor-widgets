@@ -100,8 +100,11 @@ final class Plugin {
          * @return void
          */
         private function register_hooks() {
-                // Register the custom widget category.
-                add_action( 'elementor/elements/categories_registered', array( $this, 'register_category' ) );
+                // Register the custom widget category. Runs at a very late priority
+                // so it executes after other plugins (Elementor Pro, Ultimate Addons,
+                // etc.) have registered their categories, letting us reliably move
+                // ours to the top of the list.
+                add_action( 'elementor/elements/categories_registered', array( $this, 'register_category' ), 9999 );
 
                 // Register the widgets (current Elementor API).
                 add_action( 'elementor/widgets/register', array( $this, 'register_widgets' ) );
@@ -122,17 +125,40 @@ final class Plugin {
          * @return void
          */
         public function register_category( $elements_manager ) {
-                // The third argument (offset 0) inserts our category at the very top
-                // of the Elementor widget panel so the widgets are easy to find
-                // without scrolling past the built-in categories.
-                $elements_manager->add_category(
-                        self::CATEGORY_SLUG,
-                        array(
-                                'title' => esc_html__( 'GSAP Animations', 'gsap-elementor-widgets' ),
-                                'icon'  => 'fa fa-magic',
-                        ),
-                        0
+                $properties = array(
+                        'title' => esc_html__( 'GSAP Animations', 'gsap-elementor-widgets' ),
+                        'icon'  => 'fa fa-magic',
                 );
+
+                // Register the category first so it always exists, even if the
+                // re-ordering below is not possible on a given Elementor build.
+                $elements_manager->add_category( self::CATEGORY_SLUG, $properties );
+
+                // The `add_category` offset argument is applied at call time, but other
+                // plugins (Elementor Pro, Ultimate Addons, etc.) register their own
+                // categories on the same hook and can end up before ours. To guarantee
+                // our category appears at the very top of the widget panel we re-order
+                // the manager's internal categories array, moving ours to the front.
+                // Reflection is used because the property is protected; it is wrapped in
+                // a guard so any future API change simply leaves the category in its
+                // default position rather than causing an error.
+                try {
+                        $reflection = new \ReflectionObject( $elements_manager );
+                        if ( $reflection->hasProperty( 'categories' ) ) {
+                                $property = $reflection->getProperty( 'categories' );
+                                $property->setAccessible( true );
+                                $categories = $property->getValue( $elements_manager );
+
+                                if ( is_array( $categories ) && isset( $categories[ self::CATEGORY_SLUG ] ) ) {
+                                        $ours = array( self::CATEGORY_SLUG => $categories[ self::CATEGORY_SLUG ] );
+                                        unset( $categories[ self::CATEGORY_SLUG ] );
+                                        $property->setValue( $elements_manager, $ours + $categories );
+                                }
+                        }
+                } catch ( \Exception $e ) {
+                        // Leave the category in its default position on any failure.
+                        unset( $e );
+                }
         }
 
         /**

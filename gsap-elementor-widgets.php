@@ -3,7 +3,7 @@
  * Plugin Name:       GSAP Elementor Widgets
  * Plugin URI:        https://example.com/gsap-elementor-widgets
  * Description:       Adds 10 GSAP-powered Elementor widgets (Animated Heading, Scroll Counter, Parallax Section, Staggered Card Grid, Timeline Reveal, Animated Text, 3D Icon Box, Reveal on Scroll, SVG Animator, Hero to Bento Scroll) with full no-code panel controls. Compatible with Elementor Pro 3.x / 4.x.
- * Version:           1.2.0
+ * Version:           1.2.1
  * Author:            Bristol Website Design Ltd
  * Author URI:        https://example.com
  * License:           GPL-2.0+
@@ -26,7 +26,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Plugin version.
  */
-define( 'GSAP_EW_VERSION', '1.2.0' );
+define( 'GSAP_EW_VERSION', '1.2.1' );
 
 /**
  * Absolute path to the plugin directory (with trailing slash).
