@@ -4,7 +4,7 @@
  * Plugin URI:        https://example.com/gsap-elementor-widgets
  * Description:       Adds 5 GSAP-powered Elementor widgets (Animated Heading, Scroll Counter, Parallax Section, Staggered Card Grid, Timeline Reveal) with full no-code panel controls. Compatible with Elementor Pro 3.x / 4.x.
  * Version:           1.0.0
- * Author:            Your Agency
+ * Author:            Bristol Website Design Ltd
  * Author URI:        https://example.com
  * License:           GPL-2.0+
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
@@ -20,7 +20,7 @@
 
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
-	exit;
+        exit;
 }
 
 /**
@@ -62,10 +62,10 @@ define( 'GSAP_EW_MIN_PHP_VERSION', '7.4' );
  * @return void
  */
 function gsap_ew_bootstrap() {
-	// Load the main plugin class.
-	require_once GSAP_EW_PATH . 'includes/class-plugin.php';
+        // Load the main plugin class.
+        require_once GSAP_EW_PATH . 'includes/class-plugin.php';
 
-	// Kick things off.
-	\GSAP_Elementor_Widgets\Plugin::instance();
+        // Kick things off.
+        \GSAP_Elementor_Widgets\Plugin::instance();
 }
 add_action( 'plugins_loaded', 'gsap_ew_bootstrap' );
