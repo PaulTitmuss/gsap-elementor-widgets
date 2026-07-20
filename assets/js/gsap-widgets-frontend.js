@@ -110,6 +110,7 @@
                                 'icon-box-3d': GSAPEW.initIconBox3D,
                                 'reveal-on-scroll': GSAPEW.initRevealOnScroll,
                                 'svg-animator': GSAPEW.initSvgAnimator,
+                                'hero-bento': GSAPEW.initHeroBento,
                         };
 
                         Object.keys( handlers ).forEach( function ( type ) {
@@ -559,8 +560,46 @@
                                 GSAPEW._splitText( el, anim );
                                 var selector = anim === 'chars' ? '.gsap-ew-char' : ( anim === 'words' ? '.gsap-ew-word' : '.gsap-ew-line' );
                                 targets = el.querySelectorAll( selector );
-                                fromVars = { opacity: 0, y: 24 };
-                                toVars = { opacity: 1, y: 0, duration: duration, delay: delay, ease: ease, stagger: stagger, paused: onScroll };
+
+                                // Direction each unit travels from as it appears.
+                                var dir = cfg.direction || 'up';
+                                fromVars = { opacity: 0 };
+                                toVars = { opacity: 1, duration: duration, delay: delay, ease: ease, paused: onScroll };
+                                switch ( dir ) {
+                                        case 'down':
+                                                fromVars.y = -24;
+                                                toVars.y = 0;
+                                                break;
+                                        case 'left':
+                                                fromVars.x = -40;
+                                                toVars.x = 0;
+                                                break;
+                                        case 'right':
+                                                fromVars.x = 40;
+                                                toVars.x = 0;
+                                                break;
+                                        case 'scale':
+                                                fromVars.scale = 0.5;
+                                                toVars.scale = 1;
+                                                break;
+                                        case 'none':
+                                                break;
+                                        case 'up':
+                                        default:
+                                                fromVars.y = 24;
+                                                toVars.y = 0;
+                                                break;
+                                }
+
+                                // Order the units appear in (GSAP stagger "from").
+                                var order = cfg.order || 'start';
+                                if ( order === 'random' ) {
+                                        toVars.stagger = { each: stagger, from: 'random' };
+                                } else if ( order === 'end' || order === 'center' || order === 'edges' ) {
+                                        toVars.stagger = { each: stagger, from: ( order === 'edges' ? 'edges' : order ) };
+                                } else {
+                                        toVars.stagger = stagger;
+                                }
                         } else {
                                 switch ( anim ) {
                                         case 'fade-up':
@@ -986,6 +1025,94 @@
                         }
                         return 1000;
                 },
+
+                /* =============================================================
+                 * 10. Hero to Bento
+                 * =========================================================== */
+                initHeroBento: function ( el, cfg ) {
+                        var gsap = window.gsap;
+                        var stage = el.querySelector( '.gsap-ew-herobento-stage' );
+                        var grid = el.querySelector( '.gsap-ew-herobento-grid' );
+                        var hero = el.querySelector( '.gsap-ew-herobento-hero' );
+                        var items = el.querySelectorAll( '.gsap-ew-herobento-item' );
+                        if ( ! stage || ! grid || ! hero ) {
+                                return;
+                        }
+
+                        var ease = cfg.easing || 'power2.out';
+                        var scrollLen = typeof cfg.scrollLength === 'number' ? cfg.scrollLength : 160;
+
+                        // Respect reduced-motion and missing ScrollTrigger: show the
+                        // final grid layout without any scroll effect.
+                        var reduceMotion = window.matchMedia && window.matchMedia( '(prefers-reduced-motion: reduce)' ).matches;
+                        var editMode = window.elementorFrontend && typeof window.elementorFrontend.isEditMode === 'function' && window.elementorFrontend.isEditMode();
+
+                        if ( reduceMotion || editMode || ! GSAPEW.hasScrollTrigger() ) {
+                                gsap.set( hero, { clearProps: 'transform' } );
+                                gsap.set( items, { opacity: 1, scale: 1, y: 0 } );
+                                return;
+                        }
+
+                        // Compute the transform that makes the hero cover the whole
+                        // viewport (its "full screen" starting state). Uses offset
+                        // geometry so it is independent of scroll position.
+                        var compute = function () {
+                                var gridW = grid.offsetWidth;
+                                var gridH = grid.offsetHeight;
+                                var heroW = hero.offsetWidth;
+                                var heroH = hero.offsetHeight;
+                                if ( ! heroW || ! heroH ) {
+                                        return { x: 0, y: 0, scale: 1 };
+                                }
+                                var vw = window.innerWidth;
+                                var vh = window.innerHeight;
+                                // Scale so the hero fully covers the viewport.
+                                var scale = Math.max( vw / heroW, vh / heroH );
+                                // Translate the hero centre to the grid centre (which,
+                                // while the stage is pinned, equals the viewport centre).
+                                var heroCenterX = hero.offsetLeft + ( heroW / 2 );
+                                var heroCenterY = hero.offsetTop + ( heroH / 2 );
+                                var dx = ( gridW / 2 ) - heroCenterX;
+                                var dy = ( gridH / 2 ) - heroCenterY;
+                                return { x: dx, y: dy, scale: scale };
+                        };
+
+                        gsap.set( hero, { transformOrigin: 'center center', zIndex: 5, willChange: 'transform' } );
+
+                        var tl = gsap.timeline( {
+                                scrollTrigger: {
+                                        trigger: stage,
+                                        start: 'top top',
+                                        end: '+=' + ( window.innerHeight * ( scrollLen / 100 ) ),
+                                        scrub: true,
+                                        pin: true,
+                                        anticipatePin: 1,
+                                        invalidateOnRefresh: true,
+                                },
+                        } );
+
+                        // fromTo with function-based values so they recompute on refresh
+                        // (resize / responsive), keeping the effect accurate.
+                        tl.fromTo(
+                                hero,
+                                {
+                                        x: function () { return compute().x; },
+                                        y: function () { return compute().y; },
+                                        scale: function () { return compute().scale; },
+                                },
+                                { x: 0, y: 0, scale: 1, ease: 'none' },
+                                0
+                        );
+
+                        if ( items.length ) {
+                                tl.fromTo(
+                                        items,
+                                        { opacity: 0, scale: 0.85, y: 30 },
+                                        { opacity: 1, scale: 1, y: 0, ease: ease, stagger: 0.06 },
+                                        0.35
+                                );
+                        }
+                },
         };
 
         // Expose the namespace for debugging / extension.
@@ -1022,6 +1149,7 @@
                                 'gsap-icon-box-3d',
                                 'gsap-reveal-on-scroll',
                                 'gsap-svg-animator',
+                                'gsap-hero-bento',
                         ];
 
                         types.forEach( function ( type ) {

@@ -1,8 +1,8 @@
 # GSAP Elementor Widgets
 
-Adds **9 GSAP-powered Elementor widgets** with full **no-code** controls (dropdowns, sliders, toggles) right in the Elementor panel. Built for **Elementor / Elementor Pro 3.x – 4.x**.
+Adds **10 GSAP-powered Elementor widgets** with full **no-code** controls (dropdowns, sliders, toggles) right in the Elementor panel. Built for **Elementor / Elementor Pro 3.x – 4.x**.
 
-- **Version:** 1.1.0
+- **Version:** 1.2.0
 - **Requires WordPress:** 6.0+
 - **Requires PHP:** 7.4+
 - **Requires Plugins:** Elementor (3.0.0+)
@@ -66,6 +66,8 @@ Reveal longer body copy / paragraphs with GSAP — the text-focused companion to
 - **Rich text (WYSIWYG)** content
 - **Animation type:** Fade In, Slide Up, Slide From Left, Slide From Right, Blur In, Word-by-Word, Line-by-Line, Character-by-Character
 - **Duration**, **Delay** and **Stagger** sliders (stagger applies to word/line/char modes)
+- **Reveal Direction** (word/line/char modes): From Below, From Above, From Left, From Right, Scale Up, or Fade Only
+- **Reveal Order** (word/line/char modes): Left→Right, Right→Left, From the Centre, From the Edges, or Random
 - **Easing:** Linear, Power1–4, Back, Elastic, Bounce, Circ, Expo, Sine
 - **Trigger:** On Page Load or On Scroll Into View
 - **Repeat** on every scroll (toggle)
@@ -103,6 +105,17 @@ Animates inline SVG markup you paste in — including a free self-drawing line e
 - **Loop continuously** toggle and **Repeat** on every scroll (toggle)
 - Style: width, alignment, optional stroke color & stroke width overrides
 
+### 10. Hero to Bento Scroll
+A full-screen hero (video, image or solid colour background) that shrinks and settles into its place within a **bento grid** of smaller cards as the visitor scrolls — inspired by the hero on elementor.com. Powered by GSAP ScrollTrigger pinning.
+- **Background type:** Video (MP4 URL, autoplays muted + loops), Image, or Solid Colour
+- **Hero content:** heading, sub heading and an optional button with link
+- **Bento cards:** repeatable cards, each with an image, title and text
+- **Layout:** grid columns (2–4), hero width/height in grid cells, gap, max width, grid height
+- **Scroll length** slider — controls how long/drawn-out the shrink effect lasts
+- **Card easing** dropdown, staggered card reveal
+- Style: hero heading/sub-heading/button colours & typography, card background, corner radius, title & text colours
+- Automatically disables the scroll effect for reduced-motion visitors and inside the Elementor editor (shows the final grid instead)
+
 ---
 
 ## Installation
@@ -126,7 +139,7 @@ Animates inline SVG markup you paste in — including a free self-drawing line e
 
 1. Edit any page with Elementor.
 2. In the widget panel, find the **GSAP Animations** category.
-3. Drag any of the 9 widgets onto your page.
+3. Drag any of the 10 widgets onto your page. (The **GSAP Animations** category now appears at the very top of the widget panel for quick access.)
 4. Configure the animation entirely through the panel controls — no code required.
 5. Preview / publish. Animations fire on page load or as the section scrolls into view.
 
@@ -157,7 +170,8 @@ gsap-elementor-widgets/
 │       ├── class-animated-text.php
 │       ├── class-icon-box-3d.php
 │       ├── class-reveal-on-scroll.php
-│       └── class-svg-animator.php
+│       ├── class-svg-animator.php
+│       └── class-hero-bento.php
 └── assets/
     ├── js/
     │   └── gsap-widgets-frontend.js   All GSAP initialisation logic
@@ -181,6 +195,12 @@ Only if you enable the **Repeat On Every Scroll** toggle on that widget. Otherwi
 ---
 
 ## Changelog
+
+### 1.2.0
+- Added a new **Hero to Bento Scroll** widget — a pinned full-screen hero (video / image / colour) that shrinks into a bento grid of cards on scroll, inspired by elementor.com.
+- **Animated Text** word / line / character reveals now have **Reveal Direction** (from below / above / left / right, scale, or fade-only) and **Reveal Order** (left-to-right, right-to-left, from the centre, from the edges, or random) controls.
+- The **GSAP Animations** category now appears at the **top** of the Elementor widget panel so the widgets are easy to find.
+- Plugin now ships **10 widgets** in total.
 
 ### 1.1.0
 - Added 4 new widgets: **Animated Text**, **3D Icon Box**, **Reveal on Scroll** (text + images), and **SVG Animator** (free self-drawing lines).

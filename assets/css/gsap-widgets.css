@@ -464,6 +464,141 @@
 }
 
 /* -----------------------------------------------------------------
+ * 10. Hero to Bento
+ * --------------------------------------------------------------- */
+.gsap-ew-herobento {
+        width: 100%;
+}
+
+.gsap-ew-herobento-stage {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 100vh;
+        overflow: hidden;
+}
+
+.gsap-ew-herobento-grid {
+        position: relative;
+        display: grid;
+        grid-auto-rows: 1fr;
+        width: 90vw;
+        max-width: 1200px;
+        height: 82vh;
+        margin: 0 auto;
+}
+
+/* Hero cell */
+.gsap-ew-herobento-hero {
+        position: relative;
+        display: flex;
+        align-items: flex-end;
+        overflow: hidden;
+        border-radius: 14px;
+        min-height: 0;
+        color: #fff;
+}
+
+.gsap-ew-herobento-bg {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        background-size: cover;
+        background-position: center;
+        object-fit: cover;
+}
+
+.gsap-ew-herobento-video {
+        object-fit: cover;
+}
+
+.gsap-ew-herobento-overlay {
+        position: absolute;
+        inset: 0;
+        background-color: rgba(0, 0, 0, 0.45);
+}
+
+.gsap-ew-herobento-content {
+        position: relative;
+        z-index: 2;
+        padding: 6% 7%;
+        max-width: 640px;
+}
+
+.gsap-ew-herobento-heading {
+        margin: 0 0 0.4em;
+        font-size: 2.6rem;
+        line-height: 1.1;
+        color: #fff;
+}
+
+.gsap-ew-herobento-subheading {
+        margin: 0 0 1.2em;
+        font-size: 1.1rem;
+        line-height: 1.5;
+        color: rgba(255, 255, 255, 0.85);
+}
+
+.gsap-ew-herobento-btn {
+        display: inline-block;
+        padding: 0.7em 1.6em;
+        background-color: #fff;
+        color: #1e1e2f;
+        font-weight: 600;
+        text-decoration: none;
+        border-radius: 6px;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.gsap-ew-herobento-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Bento cards */
+.gsap-ew-herobento-item {
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        background-color: #f4f4f8;
+        border-radius: 14px;
+        min-height: 0;
+}
+
+.gsap-ew-herobento-item-media {
+        flex: 1 1 auto;
+        min-height: 0;
+        overflow: hidden;
+}
+
+.gsap-ew-herobento-item-media img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+}
+
+.gsap-ew-herobento-item-body {
+        padding: 16px 18px;
+}
+
+.gsap-ew-herobento-item-title {
+        margin: 0 0 0.35em;
+        font-size: 1.05rem;
+        color: #1e1e2f;
+}
+
+.gsap-ew-herobento-item-text {
+        margin: 0;
+        font-size: 0.9rem;
+        line-height: 1.45;
+        color: #5a5a6e;
+}
+
+/* -----------------------------------------------------------------
  * Responsive
  * --------------------------------------------------------------- */
 @media (max-width: 1024px) {
@@ -496,5 +631,19 @@
         .gsap-ew-timeline--vertical .gsap-ew-timeline-item--right .gsap-ew-timeline-marker {
                 left: 0;
                 right: auto;
+        }
+
+        /* Hero-to-Bento: collapse the grid to a single column on phones and let
+           the hero heading shrink so content stays readable. */
+        .gsap-ew-herobento-grid {
+                grid-template-columns: 1fr !important;
+        }
+
+        .gsap-ew-herobento-hero {
+                grid-column: 1 / -1 !important;
+        }
+
+        .gsap-ew-herobento-heading {
+                font-size: 1.8rem;
         }
 }

@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Class Plugin
  *
- * Registers the custom Elementor widget category, the 5 widgets,
+ * Registers the custom Elementor widget category, the widgets,
  * and enqueues the GSAP frontend assets.
  */
 final class Plugin {
@@ -122,17 +122,21 @@ final class Plugin {
          * @return void
          */
         public function register_category( $elements_manager ) {
+                // The third argument (offset 0) inserts our category at the very top
+                // of the Elementor widget panel so the widgets are easy to find
+                // without scrolling past the built-in categories.
                 $elements_manager->add_category(
                         self::CATEGORY_SLUG,
                         array(
                                 'title' => esc_html__( 'GSAP Animations', 'gsap-elementor-widgets' ),
                                 'icon'  => 'fa fa-magic',
-                        )
+                        ),
+                        0
                 );
         }
 
         /**
-         * Register all 5 widgets with Elementor.
+         * Register all widgets with Elementor.
          *
          * @param \Elementor\Widgets_Manager $widgets_manager Elementor widgets manager.
          * @return void
@@ -148,6 +152,7 @@ final class Plugin {
                         'class-icon-box-3d.php'      => '\GSAP_Elementor_Widgets\Widgets\Icon_Box_3D',
                         'class-reveal-on-scroll.php' => '\GSAP_Elementor_Widgets\Widgets\Reveal_On_Scroll',
                         'class-svg-animator.php'     => '\GSAP_Elementor_Widgets\Widgets\SVG_Animator',
+                        'class-hero-bento.php'       => '\GSAP_Elementor_Widgets\Widgets\Hero_Bento',
                 );
 
                 foreach ( $widgets as $file => $class_name ) {
