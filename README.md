@@ -1,8 +1,8 @@
 # GSAP Elementor Widgets
 
-Adds **5 GSAP-powered Elementor widgets** with full **no-code** controls (dropdowns, sliders, toggles) right in the Elementor panel. Built for **Elementor / Elementor Pro 3.x – 4.x**.
+Adds **9 GSAP-powered Elementor widgets** with full **no-code** controls (dropdowns, sliders, toggles) right in the Elementor panel. Built for **Elementor / Elementor Pro 3.x – 4.x**.
 
-- **Version:** 1.0.0
+- **Version:** 1.1.0
 - **Requires WordPress:** 6.0+
 - **Requires PHP:** 7.4+
 - **Requires Plugins:** Elementor (3.0.0+)
@@ -61,6 +61,48 @@ A vertical or horizontal timeline whose milestones animate in sequence on scroll
 - **Animation duration** & **stagger delay** sliders
 - **Repeat** on every scroll (toggle)
 
+### 6. Animated Text
+Reveal longer body copy / paragraphs with GSAP — the text-focused companion to Animated Heading.
+- **Rich text (WYSIWYG)** content
+- **Animation type:** Fade In, Slide Up, Slide From Left, Slide From Right, Blur In, Word-by-Word, Line-by-Line, Character-by-Character
+- **Duration**, **Delay** and **Stagger** sliders (stagger applies to word/line/char modes)
+- **Easing:** Linear, Power1–4, Back, Elastic, Bounce, Circ, Expo, Sine
+- **Trigger:** On Page Load or On Scroll Into View
+- **Repeat** on every scroll (toggle)
+- Full typography, color and alignment (incl. justify) controls
+
+### 7. 3D Icon Box
+An icon + title + description box that enters with an eye-catching 3D transform.
+- **Icon** (Elementor icon picker), title (with HTML tag), description, optional link
+- **3D entrance:** Flip In X, Flip In Y, Rotate In 3D, Zoom + Rotate, Swing In, Unfold
+- **Perspective** slider (controls how dramatic the 3D effect is)
+- **Duration**, **Delay**, easing, trigger (load / scroll), repeat toggle
+- Optional **3D hover tilt** that follows the cursor
+- Box styling: background, padding, radius, box shadow, alignment
+- Icon styling: color, background, size, container size & radius; title/description colors + typography
+
+### 8. Reveal on Scroll
+A versatile wrapper that reveals **text or an image** on scroll with clip/mask-style wipes.
+- **Content type:** Image (media control) or Text/Heading (with HTML tag)
+- **Reveal type:** Clip Wipe, Fade + Slide, Zoom Reveal, Blur Reveal
+- **Direction:** From Left / Right / Top / Bottom (clip & fade-slide)
+- **Duration**, **Delay**, easing
+- **Start when** dropdown (how far into the viewport before revealing)
+- **Tie to scroll (scrub)** — progress the reveal with the scrollbar
+- **Repeat** on every scroll (toggle)
+- Image styling (width, radius, shadow) or text styling (color, typography, alignment)
+
+### 9. SVG Animator
+Animates inline SVG markup you paste in — including a free self-drawing line effect.
+- **SVG markup** code field (paste from `<svg>` to `</svg>`; safely sanitised)
+- **Animation mode:** Draw (self-drawing lines), Fade + Scale In, Fade Paths Sequentially, Rotate In
+- **Draw** uses the stroke-dasharray technique — no premium GSAP plugin required
+- **Fade in fill after draw** toggle (for SVGs that use fills)
+- **Duration**, **Stagger between shapes**, **Delay** sliders, easing
+- **Trigger:** On Page Load or On Scroll Into View
+- **Loop continuously** toggle and **Repeat** on every scroll (toggle)
+- Style: width, alignment, optional stroke color & stroke width overrides
+
 ---
 
 ## Installation
@@ -84,7 +126,7 @@ A vertical or horizontal timeline whose milestones animate in sequence on scroll
 
 1. Edit any page with Elementor.
 2. In the widget panel, find the **GSAP Animations** category.
-3. Drag any of the 5 widgets onto your page.
+3. Drag any of the 9 widgets onto your page.
 4. Configure the animation entirely through the panel controls — no code required.
 5. Preview / publish. Animations fire on page load or as the section scrolls into view.
 
@@ -111,7 +153,11 @@ gsap-elementor-widgets/
 │       ├── class-scroll-counter.php
 │       ├── class-parallax-section.php
 │       ├── class-staggered-grid.php
-│       └── class-timeline-reveal.php
+│       ├── class-timeline-reveal.php
+│       ├── class-animated-text.php
+│       ├── class-icon-box-3d.php
+│       ├── class-reveal-on-scroll.php
+│       └── class-svg-animator.php
 └── assets/
     ├── js/
     │   └── gsap-widgets-frontend.js   All GSAP initialisation logic
@@ -135,6 +181,10 @@ Only if you enable the **Repeat On Every Scroll** toggle on that widget. Otherwi
 ---
 
 ## Changelog
+
+### 1.1.0
+- Added 4 new widgets: **Animated Text**, **3D Icon Box**, **Reveal on Scroll** (text + images), and **SVG Animator** (free self-drawing lines).
+- Plugin now ships **9 widgets** in total.
 
 ### 1.0.0
 - Initial release with 5 widgets: Animated Heading, Scroll Counter, Parallax Section, Staggered Card Grid, Timeline Reveal.
