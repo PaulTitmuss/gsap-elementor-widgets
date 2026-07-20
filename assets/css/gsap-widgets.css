@@ -1,0 +1,394 @@
+/**
+ * GSAP Elementor Widgets — frontend styles.
+ *
+ * @package GSAP_Elementor_Widgets
+ */
+
+/* -----------------------------------------------------------------
+ * 1. Animated Heading
+ * --------------------------------------------------------------- */
+.gsap-ew-animated-heading {
+	margin: 0;
+	will-change: opacity, transform;
+}
+
+.gsap-ew-animated-heading .gsap-ew-heading-link {
+	color: inherit;
+	text-decoration: none;
+}
+
+.gsap-ew-animated-heading .gsap-ew-char {
+	display: inline-block;
+	white-space: pre;
+	will-change: opacity, transform;
+}
+
+.gsap-ew-typewriter {
+	white-space: pre-wrap;
+}
+
+.gsap-ew-typewriter::after {
+	content: "";
+	display: inline-block;
+	width: 2px;
+	height: 1em;
+	margin-left: 2px;
+	background: currentColor;
+	vertical-align: text-bottom;
+	animation: gsap-ew-caret 0.8s steps(1) infinite;
+}
+
+@keyframes gsap-ew-caret {
+	0%,
+	50% {
+		opacity: 1;
+	}
+	51%,
+	100% {
+		opacity: 0;
+	}
+}
+
+/* -----------------------------------------------------------------
+ * 2. Scroll Counter
+ * --------------------------------------------------------------- */
+.gsap-ew-counter {
+	display: block;
+	line-height: 1.1;
+}
+
+.gsap-ew-counter-prefix,
+.gsap-ew-counter-suffix,
+.gsap-ew-counter-number {
+	display: inline-block;
+	vertical-align: baseline;
+	font-weight: 700;
+}
+
+.gsap-ew-counter-number {
+	font-variant-numeric: tabular-nums;
+	font-feature-settings: "tnum";
+}
+
+/* -----------------------------------------------------------------
+ * 3. Parallax Section
+ * --------------------------------------------------------------- */
+.gsap-ew-parallax {
+	position: relative;
+	overflow: hidden;
+	width: 100%;
+	display: flex;
+}
+
+.gsap-ew-parallax-bg {
+	position: absolute;
+	top: -20%;
+	left: -20%;
+	width: 140%;
+	height: 140%;
+	background-size: cover;
+	background-position: center center;
+	background-repeat: no-repeat;
+	will-change: transform;
+	z-index: 1;
+}
+
+.gsap-ew-parallax-overlay {
+	position: absolute;
+	inset: 0;
+	z-index: 2;
+}
+
+.gsap-ew-parallax-inner {
+	position: relative;
+	z-index: 3;
+	display: flex;
+	align-items: center;
+	width: 100%;
+	height: 100%;
+	padding: 40px;
+	box-sizing: border-box;
+	will-change: transform;
+}
+
+.gsap-ew-parallax-content {
+	max-width: 720px;
+}
+
+.gsap-ew-parallax-heading {
+	margin: 0 0 0.5em;
+	color: inherit;
+}
+
+.gsap-ew-parallax-desc {
+	margin: 0;
+	color: inherit;
+}
+
+/* -----------------------------------------------------------------
+ * 4. Staggered Card Grid
+ * --------------------------------------------------------------- */
+.gsap-ew-grid-wrapper {
+	width: 100%;
+}
+
+.gsap-ew-grid {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 24px;
+}
+
+.gsap-ew-card {
+	display: flex;
+	flex-direction: column;
+	background: #fff;
+	border-radius: 12px;
+	overflow: hidden;
+	will-change: opacity, transform;
+}
+
+.gsap-ew-card-image {
+	width: 100%;
+	overflow: hidden;
+	line-height: 0;
+}
+
+.gsap-ew-card-image img {
+	width: 100%;
+	height: auto;
+	display: block;
+	object-fit: cover;
+	transition: transform 0.4s ease;
+}
+
+.gsap-ew-card:hover .gsap-ew-card-image img {
+	transform: scale(1.05);
+}
+
+.gsap-ew-card-body {
+	padding: 24px;
+	display: flex;
+	flex-direction: column;
+	flex: 1 1 auto;
+}
+
+.gsap-ew-card-subtitle {
+	font-size: 0.8125rem;
+	text-transform: uppercase;
+	letter-spacing: 0.05em;
+	color: #8a8aa0;
+	margin-bottom: 6px;
+}
+
+.gsap-ew-card-title {
+	margin: 0 0 10px;
+	font-size: 1.25rem;
+	line-height: 1.3;
+}
+
+.gsap-ew-card-desc {
+	margin: 0 0 18px;
+	color: #55556a;
+	line-height: 1.6;
+	flex: 1 1 auto;
+}
+
+.gsap-ew-card-button {
+	align-self: flex-start;
+	display: inline-block;
+	padding: 10px 22px;
+	background: #6c47ff;
+	color: #fff;
+	border-radius: 6px;
+	text-decoration: none;
+	font-weight: 600;
+	font-size: 0.9375rem;
+	transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.gsap-ew-card-button:hover {
+	opacity: 0.9;
+	transform: translateY(-2px);
+}
+
+/* -----------------------------------------------------------------
+ * 5. Timeline Reveal
+ * --------------------------------------------------------------- */
+.gsap-ew-timeline {
+	--gsap-ew-line-color: #d0d0e0;
+	--gsap-ew-line-style: solid;
+	--gsap-ew-dot-color: #6c47ff;
+	width: 100%;
+}
+
+/* Vertical layout */
+.gsap-ew-timeline--vertical .gsap-ew-timeline-track {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	gap: 40px;
+}
+
+.gsap-ew-timeline--vertical .gsap-ew-timeline-track::before {
+	content: "";
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 50%;
+	transform: translateX(-50%);
+	border-left: 3px var(--gsap-ew-line-style) var(--gsap-ew-line-color);
+}
+
+.gsap-ew-timeline--vertical .gsap-ew-timeline-item {
+	position: relative;
+	width: 50%;
+	box-sizing: border-box;
+	will-change: opacity, transform;
+}
+
+.gsap-ew-timeline--vertical .gsap-ew-timeline-item--left {
+	left: 0;
+	padding-right: 48px;
+	text-align: right;
+}
+
+.gsap-ew-timeline--vertical .gsap-ew-timeline-item--right {
+	left: 50%;
+	padding-left: 48px;
+	text-align: left;
+}
+
+.gsap-ew-timeline--vertical .gsap-ew-timeline-marker {
+	position: absolute;
+	top: 4px;
+}
+
+.gsap-ew-timeline--vertical .gsap-ew-timeline-item--left .gsap-ew-timeline-marker {
+	right: -22px;
+}
+
+.gsap-ew-timeline--vertical .gsap-ew-timeline-item--right .gsap-ew-timeline-marker {
+	left: -22px;
+}
+
+/* Horizontal layout */
+.gsap-ew-timeline--horizontal .gsap-ew-timeline-track {
+	position: relative;
+	display: flex;
+	flex-direction: row;
+	gap: 32px;
+	overflow-x: auto;
+	padding-top: 60px;
+}
+
+.gsap-ew-timeline--horizontal .gsap-ew-timeline-track::before {
+	content: "";
+	position: absolute;
+	top: 22px;
+	left: 0;
+	right: 0;
+	border-top: 3px var(--gsap-ew-line-style) var(--gsap-ew-line-color);
+}
+
+.gsap-ew-timeline--horizontal .gsap-ew-timeline-item {
+	position: relative;
+	flex: 1 0 220px;
+	min-width: 220px;
+	text-align: center;
+	will-change: opacity, transform;
+}
+
+.gsap-ew-timeline--horizontal .gsap-ew-timeline-marker {
+	position: absolute;
+	top: -60px;
+	left: 50%;
+	transform: translateX(-50%);
+}
+
+/* Shared marker / dot */
+.gsap-ew-timeline-dot {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 44px;
+	height: 44px;
+	border-radius: 50%;
+	background: var(--gsap-ew-dot-color);
+	box-shadow: 0 0 0 4px rgba(108, 71, 255, 0.15);
+}
+
+.gsap-ew-timeline-icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 18px;
+	line-height: 1;
+	color: #fff;
+}
+
+.gsap-ew-timeline-icon svg {
+	width: 18px;
+	height: 18px;
+	fill: currentColor;
+}
+
+.gsap-ew-timeline-content {
+	background: transparent;
+}
+
+.gsap-ew-timeline-label {
+	font-size: 0.8125rem;
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: 0.05em;
+	color: #6c47ff;
+	margin-bottom: 4px;
+}
+
+.gsap-ew-timeline-title {
+	margin: 0 0 8px;
+	font-size: 1.25rem;
+	line-height: 1.3;
+}
+
+.gsap-ew-timeline-desc {
+	margin: 0;
+	color: #55556a;
+	line-height: 1.6;
+}
+
+/* -----------------------------------------------------------------
+ * Responsive
+ * --------------------------------------------------------------- */
+@media (max-width: 1024px) {
+	.gsap-ew-grid {
+		grid-template-columns: repeat(2, 1fr);
+	}
+}
+
+@media (max-width: 767px) {
+	.gsap-ew-grid {
+		grid-template-columns: 1fr;
+	}
+
+	/* Collapse vertical timeline to a single left-aligned rail on mobile. */
+	.gsap-ew-timeline--vertical .gsap-ew-timeline-track::before {
+		left: 22px;
+	}
+
+	.gsap-ew-timeline--vertical .gsap-ew-timeline-item,
+	.gsap-ew-timeline--vertical .gsap-ew-timeline-item--left,
+	.gsap-ew-timeline--vertical .gsap-ew-timeline-item--right {
+		width: 100%;
+		left: 0;
+		text-align: left;
+		padding-left: 60px;
+		padding-right: 0;
+	}
+
+	.gsap-ew-timeline--vertical .gsap-ew-timeline-item--left .gsap-ew-timeline-marker,
+	.gsap-ew-timeline--vertical .gsap-ew-timeline-item--right .gsap-ew-timeline-marker {
+		left: 0;
+		right: auto;
+	}
+}
