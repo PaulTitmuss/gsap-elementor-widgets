@@ -548,6 +548,55 @@ class Hero_Bento extends Widget_Base {
                         )
                 );
 
+                $this->add_responsive_control(
+                        'card_image_height',
+                        array(
+                                'label'       => esc_html__( 'Card Image Height', 'gsap-elementor-widgets' ),
+                                'description' => esc_html__( 'Minimum height for the card images. Recommended on mobile to prevent squashed images. Leave blank to use the default (flexible auto-height).', 'gsap-elementor-widgets' ),
+                                'type'        => Controls_Manager::SLIDER,
+                                'size_units'  => array( 'px', '%', 'vh' ),
+                                'range'       => array(
+                                        'px' => array(
+                                                'min'  => 80,
+                                                'max'  => 500,
+                                                'step' => 10,
+                                        ),
+                                        '%'  => array(
+                                                'min' => 20,
+                                                'max' => 100,
+                                        ),
+                                        'vh' => array(
+                                                'min' => 10,
+                                                'max' => 60,
+                                        ),
+                                ),
+                                'selectors'   => array(
+                                        '{{WRAPPER}} .gsap-ew-herobento-item-media' => 'min-height: {{SIZE}}{{UNIT}};',
+                                ),
+                        )
+                );
+
+                $this->add_responsive_control(
+                        'card_content_padding',
+                        array(
+                                'label'       => esc_html__( 'Card Text Padding', 'gsap-elementor-widgets' ),
+                                'description' => esc_html__( 'Padding around the card title and description text. Can be adjusted per device.', 'gsap-elementor-widgets' ),
+                                'type'        => Controls_Manager::DIMENSIONS,
+                                'size_units'  => array( 'px', 'em' ),
+                                'default'     => array(
+                                        'top'      => '16',
+                                        'right'    => '18',
+                                        'bottom'   => '16',
+                                        'left'     => '18',
+                                        'unit'     => 'px',
+                                        'isLinked' => false,
+                                ),
+                                'selectors'   => array(
+                                        '{{WRAPPER}} .gsap-ew-herobento-item-body' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+                                ),
+                        )
+                );
+
                 $this->add_control(
                         'card_radius',
                         array(

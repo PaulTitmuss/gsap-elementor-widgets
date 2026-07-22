@@ -2,7 +2,7 @@
 
 Adds **10 GSAP-powered Elementor widgets** with full **no-code** controls (dropdowns, sliders, toggles) right in the Elementor panel. Built for **Elementor / Elementor Pro 3.x – 4.x**.
 
-- **Version:** 1.2.2
+- **Version:** 1.2.3
 - **Requires WordPress:** 6.0+
 - **Requires PHP:** 7.4+
 - **Requires Plugins:** Elementor (3.0.0+)
@@ -195,6 +195,9 @@ Only if you enable the **Repeat On Every Scroll** toggle on that widget. Otherwi
 ---
 
 ## Changelog
+
+### 1.2.3
+- **Added mobile styling controls to the Hero to Bento Scroll widget.** You can now set a **responsive Card Image Height** (with desktop/tablet/mobile breakpoints) to prevent card images from being squashed on smaller screens, plus a **responsive Card Text Padding** control to fine-tune spacing on mobile. The CSS also now applies a sensible default min-height (180px) to card images on phones if you haven't set a custom value.
 
 ### 1.2.2
 - **Fixed: widgets below a Hero to Bento section animated on page load** instead of on scroll. The pinned hero adds extra scroll space (its "pin spacer") that pushes everything below it further down the page. That extra space was not being accounted for, so every widget underneath calculated its scroll position as if the hero took no room and fired far too early — by the time you scrolled down to them, the animations had already finished. The hero's ScrollTrigger now has a high `refreshPriority`, and positions are recalculated after page load and once images / web fonts finish loading, so each widget now animates exactly when it scrolls into view.

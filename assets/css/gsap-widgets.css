@@ -669,4 +669,11 @@
         .gsap-ew-herobento-heading {
                 font-size: 1.8rem;
         }
+
+        /* Prevent card images from collapsing too much on mobile — set a sensible
+           default min-height (users can override via the responsive Card Image
+           Height control if needed). */
+        .gsap-ew-herobento-item-media {
+                min-height: 180px;
+        }
 }
