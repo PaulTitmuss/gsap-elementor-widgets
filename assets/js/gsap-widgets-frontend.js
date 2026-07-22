@@ -1105,6 +1105,16 @@
                                         pin: true,
                                         anticipatePin: 1,
                                         invalidateOnRefresh: true,
+                                        // This section is pinned, so it inserts pin-spacing that
+                                        // pushes every widget below it further down the page. A high
+                                        // refreshPriority guarantees this ScrollTrigger is measured
+                                        // FIRST on each refresh, so the pin-spacing is already in
+                                        // place when the widgets below calculate their start/end
+                                        // positions. Without this, those widgets calculate positions
+                                        // as if the hero took no space and fire far too early (while
+                                        // the hero is still pinned over them), so their animations
+                                        // have already finished by the time you scroll to them.
+                                        refreshPriority: 10,
                                 },
                         } );
 
@@ -1154,14 +1164,45 @@
         window.GSAPElementorWidgets = GSAPEW;
 
         /**
+         * Ask ScrollTrigger to recalculate every trigger's start/end position.
+         *
+         * This MUST run after all widgets have been initialised (the pinned
+         * Hero to Bento widget is created last and inserts pin-spacing that
+         * pushes everything below it down the page). It also re-runs once the
+         * window "load" event fires and once web fonts finish loading, because
+         * late-loading images and fonts change the page height and therefore
+         * every trigger position. Without these refreshes the widgets below a
+         * pinned hero fire far too early — their animations finish before you
+         * ever scroll them into view.
+         *
+         * @return {void}
+         */
+        GSAPEW.refreshScrollTriggers = function () {
+                if ( typeof window.ScrollTrigger !== 'undefined' ) {
+                        window.ScrollTrigger.refresh();
+                }
+        };
+
+        /**
          * Standard front-end boot.
          */
-        if ( document.readyState === 'loading' ) {
-                document.addEventListener( 'DOMContentLoaded', function () {
-                        GSAPEW.initAll( document );
-                } );
-        } else {
+        var boot = function () {
                 GSAPEW.initAll( document );
+                // Recalculate once now that everything (incl. the pinned hero) exists.
+                GSAPEW.refreshScrollTriggers();
+        };
+
+        if ( document.readyState === 'loading' ) {
+                document.addEventListener( 'DOMContentLoaded', boot );
+        } else {
+                boot();
+        }
+
+        // Re-measure after all images/iframes have loaded and after web fonts
+        // settle, since both change the page height and thus trigger positions.
+        window.addEventListener( 'load', GSAPEW.refreshScrollTriggers );
+        if ( document.fonts && document.fonts.ready && typeof document.fonts.ready.then === 'function' ) {
+                document.fonts.ready.then( GSAPEW.refreshScrollTriggers );
         }
 
         /**

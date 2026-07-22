@@ -2,7 +2,7 @@
 
 Adds **10 GSAP-powered Elementor widgets** with full **no-code** controls (dropdowns, sliders, toggles) right in the Elementor panel. Built for **Elementor / Elementor Pro 3.x – 4.x**.
 
-- **Version:** 1.2.1
+- **Version:** 1.2.2
 - **Requires WordPress:** 6.0+
 - **Requires PHP:** 7.4+
 - **Requires Plugins:** Elementor (3.0.0+)
@@ -107,7 +107,7 @@ Animates inline SVG markup you paste in — including a free self-drawing line e
 
 ### 10. Hero to Bento Scroll
 A full-screen hero (video, image or solid colour background) that shrinks and settles into its place within a **bento grid** of smaller cards as the visitor scrolls — inspired by the hero on elementor.com. Powered by GSAP ScrollTrigger pinning.
-- **Background type:** Video (MP4 URL, autoplays muted + loops), Image, or Solid Colour
+- **Background type:** Video (paste a **YouTube**, **Vimeo** or direct **.mp4** link — autoplays muted + loops, scaled to cover with no black bars), Image, or Solid Colour
 - **Hero content:** heading, sub heading and an optional button with link
 - **Bento cards:** repeatable cards, each with an image, title and text
 - **Layout:** grid columns (2–4), hero width/height in grid cells, gap, max width, grid height
@@ -195,6 +195,10 @@ Only if you enable the **Repeat On Every Scroll** toggle on that widget. Otherwi
 ---
 
 ## Changelog
+
+### 1.2.2
+- **Fixed: widgets below a Hero to Bento section animated on page load** instead of on scroll. The pinned hero adds extra scroll space (its "pin spacer") that pushes everything below it further down the page. That extra space was not being accounted for, so every widget underneath calculated its scroll position as if the hero took no room and fired far too early — by the time you scrolled down to them, the animations had already finished. The hero's ScrollTrigger now has a high `refreshPriority`, and positions are recalculated after page load and once images / web fonts finish loading, so each widget now animates exactly when it scrolls into view.
+- **Added YouTube and Vimeo support to the Hero to Bento Scroll background video.** Previously the Video URL box only accepted a direct `.mp4` link, so pasting a YouTube link showed nothing. You can now paste a normal YouTube link (`youtube.com/watch?v=…`, `youtu.be/…`, Shorts or embed links), a Vimeo link, or a direct `.mp4` file — it autoplays muted, loops, and is scaled to cover the hero with no black bars.
 
 ### 1.2.1
 - Fixed **Hero to Bento Scroll** not working on the live site: on the front end the widget was being initialised twice, creating a second scroll-lock (pin) on the same hero. The two stacked pins broke the scroll maths and made the page jump straight past the section. It now initialises once and scrolls smoothly.

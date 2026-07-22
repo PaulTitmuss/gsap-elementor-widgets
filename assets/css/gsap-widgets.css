@@ -516,6 +516,26 @@
         object-fit: cover;
 }
 
+/* YouTube / Vimeo background embed: scale a 16:9 iframe so it fully covers
+   the hero area (like object-fit: cover) with no letterbox bars, and let
+   clicks pass through so it behaves like a background. */
+.gsap-ew-herobento-embed {
+        overflow: hidden;
+        pointer-events: none;
+}
+
+.gsap-ew-herobento-embed iframe {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 100vw;
+        height: 56.25vw; /* 16:9 based on width */
+        min-width: 177.78vh; /* 16:9 based on height */
+        min-height: 100vh;
+        transform: translate(-50%, -50%);
+        border: 0;
+}
+
 .gsap-ew-herobento-overlay {
         position: absolute;
         inset: 0;
