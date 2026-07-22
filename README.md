@@ -2,7 +2,7 @@
 
 Adds **10 GSAP-powered Elementor widgets** with full **no-code** controls (dropdowns, sliders, toggles) right in the Elementor panel. Built for **Elementor / Elementor Pro 3.x – 4.x**.
 
-- **Version:** 1.2.3
+- **Version:** 1.2.4
 - **Requires WordPress:** 6.0+
 - **Requires PHP:** 7.4+
 - **Requires Plugins:** Elementor (3.0.0+)
@@ -195,6 +195,9 @@ Only if you enable the **Repeat On Every Scroll** toggle on that widget. Otherwi
 ---
 
 ## Changelog
+
+### 1.2.4
+- **Fixed squashed Hero to Bento cards on mobile.** On phones the whole section was still locked to a fixed screen height with equal rows, so once it stacked into one column every card became a short letterbox and its title/text were clipped (and raising the Card Image Height just zoomed the image inside that fixed box). On mobile the widget now skips the pinned "shrink into grid" scroll effect and lays the section out as a natural vertical stack: the hero gets a proper height, and each card grows to fit a full-size image **plus** its title and text. The **Card Image Height** control now genuinely resizes the image box on mobile.
 
 ### 1.2.3
 - **Added mobile styling controls to the Hero to Bento Scroll widget.** You can now set a **responsive Card Image Height** (with desktop/tablet/mobile breakpoints) to prevent card images from being squashed on smaller screens, plus a **responsive Card Text Padding** control to fine-tune spacing on mobile. The CSS also now applies a sensible default min-height (180px) to card images on phones if you haven't set a custom value.

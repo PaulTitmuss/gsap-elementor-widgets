@@ -656,24 +656,51 @@
                 right: auto;
         }
 
-        /* Hero-to-Bento: collapse the grid to a single column on phones and let
-           the hero heading shrink so content stays readable. */
+        /* Hero-to-Bento on phones: the pinned, fixed-height "shrink into grid"
+           effect is disabled in JS on mobile, so here we let the whole section
+           flow as a natural vertical stack. The stage and grid drop their fixed
+           viewport height, rows size to their content, and the hero + each card
+           get a real, readable height (no more squashed letterbox cards with
+           clipped titles/text). */
+        .gsap-ew-herobento-stage {
+                display: block !important;
+                height: auto !important;
+                min-height: 0 !important;
+                overflow: visible !important;
+                padding: 24px 0 !important;
+        }
+
         .gsap-ew-herobento-grid {
                 grid-template-columns: 1fr !important;
+                grid-auto-rows: auto !important;
+                height: auto !important;
+                width: 90vw;
         }
 
         .gsap-ew-herobento-hero {
                 grid-column: 1 / -1 !important;
+                grid-row: auto !important;
+                min-height: 60vh;
         }
 
         .gsap-ew-herobento-heading {
                 font-size: 1.8rem;
         }
 
-        /* Prevent card images from collapsing too much on mobile — set a sensible
-           default min-height (users can override via the responsive Card Image
-           Height control if needed). */
+        /* Cards now grow to fit their content: a properly-sized image on top and
+           the title/text fully visible below. The image gets a sensible default
+           height, which you can override per-device with the "Card Image Height"
+           control in the Card Style tab. */
+        .gsap-ew-herobento-item {
+                min-height: 0;
+        }
+
         .gsap-ew-herobento-item-media {
-                min-height: 180px;
+                flex: 0 0 auto;
+                min-height: 200px;
+        }
+
+        .gsap-ew-herobento-item-body {
+                flex: 0 0 auto;
         }
 }

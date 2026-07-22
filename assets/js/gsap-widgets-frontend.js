@@ -1057,8 +1057,15 @@
                         // final grid layout without any scroll effect.
                         var reduceMotion = window.matchMedia && window.matchMedia( '(prefers-reduced-motion: reduce)' ).matches;
                         var editMode = window.elementorFrontend && typeof window.elementorFrontend.isEditMode === 'function' && window.elementorFrontend.isEditMode();
+                        // On phones the pinned "shrink into a fixed-height grid" effect
+                        // does not fit (hero + stacked cards cannot share one 100vh
+                        // screen without squashing every card into a letterbox and
+                        // clipping its title/text). So on mobile we skip the scroll
+                        // animation and simply show the grid as a natural, flowing
+                        // stack — the CSS mobile rules give each card a real height.
+                        var isMobile = window.matchMedia && window.matchMedia( '(max-width: 767px)' ).matches;
 
-                        if ( reduceMotion || editMode || ! GSAPEW.hasScrollTrigger() ) {
+                        if ( reduceMotion || editMode || isMobile || ! GSAPEW.hasScrollTrigger() ) {
                                 gsap.set( hero, { clearProps: 'transform' } );
                                 if ( content ) {
                                         gsap.set( content, { clearProps: 'transform' } );
