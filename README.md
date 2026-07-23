@@ -2,7 +2,7 @@
 
 Adds **10 GSAP-powered Elementor widgets** with full **no-code** controls (dropdowns, sliders, toggles) right in the Elementor panel. Built for **Elementor / Elementor Pro 3.x – 4.x**.
 
-- **Version:** 1.2.4
+- **Version:** 1.2.5
 - **Requires WordPress:** 6.0+
 - **Requires PHP:** 7.4+
 - **Requires Plugins:** Elementor (3.0.0+)
@@ -195,6 +195,14 @@ Only if you enable the **Repeat On Every Scroll** toggle on that widget. Otherwi
 ---
 
 ## Changelog
+
+### 1.2.5
+- **Big Hero to Bento Scroll upgrade — more control over the cards and hero overlay:**
+  - **Buttons on every card.** Each Bento card now has its own optional **Button Text** and **Button Link** (leave the text blank for no button). Style them with the new **Card Button Text Colour** and **Card Button Background** controls in the Card Style tab.
+  - **Two card layouts.** Each card has a **Card Layout** option: *Image Above Text* (the original look — image on top, title/text in a panel below) or *Image Fills Card (text centred)* — the image covers the whole card with the title, text and button centred on top of it.
+  - **Per-card image overlay.** Every card now has an **Image Overlay Colour** (like the main hero) — a colour tint over the image that keeps centred text readable in the "Image Fills Card" layout. Leave blank for no overlay.
+  - **Animated hero overlay (Start & Final).** The hero's single overlay setting has been replaced with a **Start Overlay (full screen)** and a **Final Overlay (shrunk into grid)**. The overlay fades smoothly between the two as the hero shrinks — so you can have **no overlay while a video plays full screen**, then have a dark overlay fade in as it settles into the grid.
+  - **Fade in text & button on scroll.** A new toggle makes the hero heading, sub heading and button start hidden and fade in as the hero shrinks. Perfect with a background video: visitors watch it distraction-free until they start scrolling.
 
 ### 1.2.4
 - **Fixed squashed Hero to Bento cards on mobile.** On phones the whole section was still locked to a fixed screen height with equal rows, so once it stacked into one column every card became a short letterbox and its title/text were clipped (and raising the Card Image Height just zoomed the image inside that fixed box). On mobile the widget now skips the pinned "shrink into grid" scroll effect and lays the section out as a natural vertical stack: the hero gets a proper height, and each card grows to fit a full-size image **plus** its title and text. The **Card Image Height** control now genuinely resizes the image box on mobile.

@@ -1035,6 +1035,7 @@
                         var grid = el.querySelector( '.gsap-ew-herobento-grid' );
                         var hero = el.querySelector( '.gsap-ew-herobento-hero' );
                         var content = el.querySelector( '.gsap-ew-herobento-content' );
+                        var overlay = el.querySelector( '.gsap-ew-herobento-overlay' );
                         var items = el.querySelectorAll( '.gsap-ew-herobento-item' );
                         if ( ! stage || ! grid || ! hero ) {
                                 return;
@@ -1042,6 +1043,9 @@
 
                         var ease = cfg.easing || 'power2.out';
                         var scrollLen = typeof cfg.scrollLength === 'number' ? cfg.scrollLength : 160;
+                        var overlayStart = cfg.overlayStart || 'rgba(0,0,0,0.45)';
+                        var overlayFinal = cfg.overlayFinal || 'rgba(0,0,0,0.45)';
+                        var fadeContent = cfg.fadeContent === true;
 
                         // Defensive cleanup: kill any ScrollTrigger already bound to this
                         // stage so re-initialisation can never stack a second pin.
@@ -1068,7 +1072,12 @@
                         if ( reduceMotion || editMode || isMobile || ! GSAPEW.hasScrollTrigger() ) {
                                 gsap.set( hero, { clearProps: 'transform' } );
                                 if ( content ) {
-                                        gsap.set( content, { clearProps: 'transform' } );
+                                        gsap.set( content, { clearProps: 'transform', opacity: 1 } );
+                                }
+                                // No scroll animation here, so show the final (settled) overlay
+                                // colour rather than the start colour.
+                                if ( overlay ) {
+                                        gsap.set( overlay, { backgroundColor: overlayFinal } );
                                 }
                                 gsap.set( items, { opacity: 1, scale: 1, y: 0 } );
                                 return;
@@ -1152,6 +1161,32 @@
                                                 },
                                         },
                                         { scale: 1, ease: 'none' },
+                                        0
+                                );
+                        }
+
+                        // Fade the overlay from its start colour to its final colour as the
+                        // hero shrinks. If both colours are identical this is a no-op, so it
+                        // is always safe to add.
+                        if ( overlay ) {
+                                tl.fromTo(
+                                        overlay,
+                                        { backgroundColor: overlayStart },
+                                        { backgroundColor: overlayFinal, ease: 'none' },
+                                        0
+                                );
+                        }
+
+                        // Optionally fade the hero text & button in as the hero shrinks, so a
+                        // background video can be watched distraction-free until the visitor
+                        // scrolls. The content is set to hidden immediately (before paint) to
+                        // avoid a flash of visible text on load.
+                        if ( fadeContent && content ) {
+                                gsap.set( content, { opacity: 0 } );
+                                tl.fromTo(
+                                        content,
+                                        { opacity: 0 },
+                                        { opacity: 1, ease: 'none' },
                                         0
                                 );
                         }

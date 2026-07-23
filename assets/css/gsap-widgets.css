@@ -592,6 +592,7 @@
 }
 
 .gsap-ew-herobento-item-media {
+        position: relative;
         flex: 1 1 auto;
         min-height: 0;
         overflow: hidden;
@@ -602,6 +603,13 @@
         width: 100%;
         height: 100%;
         object-fit: cover;
+}
+
+/* Colour tint placed over a card image (both layouts). */
+.gsap-ew-herobento-item-overlay {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
 }
 
 .gsap-ew-herobento-item-body {
@@ -619,6 +627,64 @@
         font-size: 0.9rem;
         line-height: 1.45;
         color: #5a5a6e;
+}
+
+/* Card button (per-card, optional). */
+.gsap-ew-herobento-item-btn {
+        display: inline-block;
+        margin-top: 14px;
+        padding: 9px 18px;
+        border-radius: 999px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        line-height: 1.2;
+        text-decoration: none;
+        background-color: #1e1e2f;
+        color: #fff;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.gsap-ew-herobento-item-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* -----------------------------------------------------------------
+ * Bento card — "Image Fills Card" (cover) layout
+ * The image covers the whole card; the title / text / button sit
+ * centred on top of it, above the overlay.
+ * --------------------------------------------------------------- */
+.gsap-ew-herobento-item--cover {
+        position: relative;
+}
+
+.gsap-ew-herobento-item--cover .gsap-ew-herobento-item-media {
+        position: absolute;
+        inset: 0;
+        flex: none;
+}
+
+.gsap-ew-herobento-item--cover .gsap-ew-herobento-item-body {
+        position: relative;
+        z-index: 2;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        text-align: center;
+        padding: 24px;
+}
+
+/* Smart default text colour for cover cards: white so it reads against a
+   photo. A colour chosen in the Card Style tab overrides this (its selector
+   includes the wrapper ID and so wins on specificity). */
+.gsap-ew-herobento-item--cover .gsap-ew-herobento-item-title {
+        color: #fff;
+}
+
+.gsap-ew-herobento-item--cover .gsap-ew-herobento-item-text {
+        color: rgba(255, 255, 255, 0.9);
 }
 
 /* -----------------------------------------------------------------
@@ -702,5 +768,19 @@
 
         .gsap-ew-herobento-item-body {
                 flex: 0 0 auto;
+        }
+
+        /* "Image Fills Card" cards: the image is absolutely positioned, so give the
+           card itself a real height on mobile and let the text overlay fill it. */
+        .gsap-ew-herobento-item--cover {
+                min-height: 320px;
+        }
+
+        .gsap-ew-herobento-item--cover .gsap-ew-herobento-item-media {
+                min-height: 0;
+        }
+
+        .gsap-ew-herobento-item--cover .gsap-ew-herobento-item-body {
+                min-height: 320px;
         }
 }

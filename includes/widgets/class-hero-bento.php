@@ -164,14 +164,35 @@ class Hero_Bento extends Widget_Base {
                 );
 
                 $this->add_control(
-                        'overlay_color',
+                        'overlay_start_color',
                         array(
-                                'label'     => esc_html__( 'Overlay Colour', 'gsap-elementor-widgets' ),
-                                'type'      => Controls_Manager::COLOR,
-                                'default'   => 'rgba(0,0,0,0.45)',
-                                'selectors' => array(
-                                        '{{WRAPPER}} .gsap-ew-herobento-overlay' => 'background-color: {{VALUE}};',
-                                ),
+                                'label'       => esc_html__( 'Start Overlay (full screen)', 'gsap-elementor-widgets' ),
+                                'description' => esc_html__( 'The overlay colour while the hero fills the whole screen at the top. Set this to transparent if you want the video / image to play with no overlay until the visitor starts scrolling.', 'gsap-elementor-widgets' ),
+                                'type'        => Controls_Manager::COLOR,
+                                'default'     => 'rgba(0,0,0,0.45)',
+                        )
+                );
+
+                $this->add_control(
+                        'overlay_final_color',
+                        array(
+                                'label'       => esc_html__( 'Final Overlay (shrunk into grid)', 'gsap-elementor-widgets' ),
+                                'description' => esc_html__( 'The overlay colour once the hero has shrunk into its place in the grid. The overlay fades smoothly from the start colour to this final colour as the visitor scrolls.', 'gsap-elementor-widgets' ),
+                                'type'        => Controls_Manager::COLOR,
+                                'default'     => 'rgba(0,0,0,0.45)',
+                        )
+                );
+
+                $this->add_control(
+                        'fade_content',
+                        array(
+                                'label'        => esc_html__( 'Fade In Text & Button On Scroll', 'gsap-elementor-widgets' ),
+                                'description'  => esc_html__( 'When on, the heading, sub heading and button start hidden and fade in as the hero shrinks. Great with a background video — visitors can watch it distraction-free until they scroll.', 'gsap-elementor-widgets' ),
+                                'type'         => Controls_Manager::SWITCHER,
+                                'label_on'     => esc_html__( 'Yes', 'gsap-elementor-widgets' ),
+                                'label_off'    => esc_html__( 'No', 'gsap-elementor-widgets' ),
+                                'return_value' => 'yes',
+                                'default'      => '',
                         )
                 );
 
@@ -232,6 +253,20 @@ class Hero_Bento extends Widget_Base {
                 $repeater = new Repeater();
 
                 $repeater->add_control(
+                        'item_layout',
+                        array(
+                                'label'       => esc_html__( 'Card Layout', 'gsap-elementor-widgets' ),
+                                'description' => esc_html__( 'Image Above Text: the image sits on top with the title & text in a panel below. Image Fills Card: the image covers the whole card with the text centred on top of it (use the overlay below to keep text readable).', 'gsap-elementor-widgets' ),
+                                'type'        => Controls_Manager::SELECT,
+                                'default'     => 'above',
+                                'options'     => array(
+                                        'above' => esc_html__( 'Image Above Text', 'gsap-elementor-widgets' ),
+                                        'cover' => esc_html__( 'Image Fills Card (text centred)', 'gsap-elementor-widgets' ),
+                                ),
+                        )
+                );
+
+                $repeater->add_control(
                         'item_image',
                         array(
                                 'label'   => esc_html__( 'Image', 'gsap-elementor-widgets' ),
@@ -239,6 +274,16 @@ class Hero_Bento extends Widget_Base {
                                 'default' => array(
                                         'url' => \Elementor\Utils::get_placeholder_image_src(),
                                 ),
+                        )
+                );
+
+                $repeater->add_control(
+                        'item_overlay_color',
+                        array(
+                                'label'       => esc_html__( 'Image Overlay Colour', 'gsap-elementor-widgets' ),
+                                'description' => esc_html__( 'A colour tint placed over the image. In "Image Fills Card" mode this keeps the centred text readable. Leave blank for no overlay.', 'gsap-elementor-widgets' ),
+                                'type'        => Controls_Manager::COLOR,
+                                'default'     => '',
                         )
                 );
 
@@ -258,6 +303,29 @@ class Hero_Bento extends Widget_Base {
                                 'label'   => esc_html__( 'Text', 'gsap-elementor-widgets' ),
                                 'type'    => Controls_Manager::TEXTAREA,
                                 'default' => esc_html__( 'A short supporting line of text.', 'gsap-elementor-widgets' ),
+                        )
+                );
+
+                $repeater->add_control(
+                        'item_button_text',
+                        array(
+                                'label'       => esc_html__( 'Button Text', 'gsap-elementor-widgets' ),
+                                'description' => esc_html__( 'Leave blank for no button on this card.', 'gsap-elementor-widgets' ),
+                                'type'        => Controls_Manager::TEXT,
+                                'label_block' => true,
+                                'default'     => '',
+                        )
+                );
+
+                $repeater->add_control(
+                        'item_button_link',
+                        array(
+                                'label'       => esc_html__( 'Button Link', 'gsap-elementor-widgets' ),
+                                'type'        => Controls_Manager::URL,
+                                'placeholder' => 'https://your-site.com',
+                                'condition'   => array(
+                                        'item_button_text!' => '',
+                                ),
                         )
                 );
 
@@ -623,10 +691,11 @@ class Hero_Bento extends Widget_Base {
                 $this->add_control(
                         'card_title_color',
                         array(
-                                'label'     => esc_html__( 'Card Title Colour', 'gsap-elementor-widgets' ),
-                                'type'      => Controls_Manager::COLOR,
-                                'default'   => '#1e1e2f',
-                                'selectors' => array(
+                                'label'       => esc_html__( 'Card Title Colour', 'gsap-elementor-widgets' ),
+                                'description' => esc_html__( 'Leave blank to use the smart default (dark for "Image Above Text" cards, white for "Image Fills Card" cards).', 'gsap-elementor-widgets' ),
+                                'type'        => Controls_Manager::COLOR,
+                                'default'     => '',
+                                'selectors'   => array(
                                         '{{WRAPPER}} .gsap-ew-herobento-item-title' => 'color: {{VALUE}};',
                                 ),
                         )
@@ -635,11 +704,36 @@ class Hero_Bento extends Widget_Base {
                 $this->add_control(
                         'card_text_color',
                         array(
-                                'label'     => esc_html__( 'Card Text Colour', 'gsap-elementor-widgets' ),
-                                'type'      => Controls_Manager::COLOR,
-                                'default'   => '#5a5a6e',
-                                'selectors' => array(
+                                'label'       => esc_html__( 'Card Text Colour', 'gsap-elementor-widgets' ),
+                                'description' => esc_html__( 'Leave blank to use the smart default (grey for "Image Above Text" cards, white for "Image Fills Card" cards).', 'gsap-elementor-widgets' ),
+                                'type'        => Controls_Manager::COLOR,
+                                'default'     => '',
+                                'selectors'   => array(
                                         '{{WRAPPER}} .gsap-ew-herobento-item-text' => 'color: {{VALUE}};',
+                                ),
+                        )
+                );
+
+                $this->add_control(
+                        'card_btn_color',
+                        array(
+                                'label'     => esc_html__( 'Card Button Text Colour', 'gsap-elementor-widgets' ),
+                                'type'      => Controls_Manager::COLOR,
+                                'default'   => '#ffffff',
+                                'selectors' => array(
+                                        '{{WRAPPER}} .gsap-ew-herobento-item-btn' => 'color: {{VALUE}};',
+                                ),
+                        )
+                );
+
+                $this->add_control(
+                        'card_btn_bg_color',
+                        array(
+                                'label'     => esc_html__( 'Card Button Background', 'gsap-elementor-widgets' ),
+                                'type'      => Controls_Manager::COLOR,
+                                'default'   => '#1e1e2f',
+                                'selectors' => array(
+                                        '{{WRAPPER}} .gsap-ew-herobento-item-btn' => 'background-color: {{VALUE}};',
                                 ),
                         )
                 );
@@ -655,9 +749,16 @@ class Hero_Bento extends Widget_Base {
         protected function render() {
                 $settings = $this->get_settings_for_display();
 
+                $overlay_start = isset( $settings['overlay_start_color'] ) && '' !== $settings['overlay_start_color'] ? $settings['overlay_start_color'] : 'rgba(0,0,0,0.45)';
+                $overlay_final = isset( $settings['overlay_final_color'] ) && '' !== $settings['overlay_final_color'] ? $settings['overlay_final_color'] : 'rgba(0,0,0,0.45)';
+                $fade_content  = ( isset( $settings['fade_content'] ) && 'yes' === $settings['fade_content'] );
+
                 $config = array(
                         'scrollLength' => isset( $settings['scroll_length']['size'] ) ? (float) $settings['scroll_length']['size'] : 160,
                         'easing'       => isset( $settings['easing'] ) ? $settings['easing'] : 'power2.out',
+                        'overlayStart' => $overlay_start,
+                        'overlayFinal' => $overlay_final,
+                        'fadeContent'  => $fade_content,
                 );
 
                 $cols       = isset( $settings['columns'] ) ? (int) $settings['columns'] : 3;
@@ -709,7 +810,10 @@ class Hero_Bento extends Widget_Base {
                         echo '<div class="gsap-ew-herobento-bg" style="background-image:url(' . esc_url( $settings['bg_image']['url'] ) . ');"></div>';
                 }
 
-                echo '<div class="gsap-ew-herobento-overlay"></div>';
+                // The overlay starts at the "start" colour; JS tweens it to the "final"
+                // colour as the hero shrinks. Rendering the start colour inline avoids a
+                // flash of the wrong colour before JS runs.
+                echo '<div class="gsap-ew-herobento-overlay" style="background-color:' . esc_attr( $overlay_start ) . ';"></div>';
 
                 // Hero content.
                 echo '<div class="gsap-ew-herobento-content">';
@@ -740,16 +844,45 @@ class Hero_Bento extends Widget_Base {
                 /* -------------------- Bento cards -------------------- */
                 if ( ! empty( $settings['items'] ) && is_array( $settings['items'] ) ) {
                         foreach ( $settings['items'] as $item ) {
-                                echo '<div class="gsap-ew-herobento-item">';
-                                if ( ! empty( $item['item_image']['url'] ) ) {
-                                        echo '<div class="gsap-ew-herobento-item-media"><img src="' . esc_url( $item['item_image']['url'] ) . '" alt="' . esc_attr( isset( $item['item_title'] ) ? $item['item_title'] : '' ) . '" /></div>';
+                                $layout    = ( isset( $item['item_layout'] ) && 'cover' === $item['item_layout'] ) ? 'cover' : 'above';
+                                $item_class = 'gsap-ew-herobento-item';
+                                if ( 'cover' === $layout ) {
+                                        $item_class .= ' gsap-ew-herobento-item--cover';
                                 }
+
+                                echo '<div class="' . esc_attr( $item_class ) . '">';
+
+                                // Media (image) + optional colour overlay over it.
+                                if ( ! empty( $item['item_image']['url'] ) ) {
+                                        echo '<div class="gsap-ew-herobento-item-media">';
+                                        echo '<img src="' . esc_url( $item['item_image']['url'] ) . '" alt="' . esc_attr( isset( $item['item_title'] ) ? $item['item_title'] : '' ) . '" />';
+                                        if ( ! empty( $item['item_overlay_color'] ) ) {
+                                                echo '<div class="gsap-ew-herobento-item-overlay" style="background-color:' . esc_attr( $item['item_overlay_color'] ) . ';"></div>';
+                                        }
+                                        echo '</div>';
+                                }
+
                                 echo '<div class="gsap-ew-herobento-item-body">';
                                 if ( ! empty( $item['item_title'] ) ) {
                                         echo '<h3 class="gsap-ew-herobento-item-title">' . esc_html( $item['item_title'] ) . '</h3>';
                                 }
                                 if ( ! empty( $item['item_text'] ) ) {
                                         echo '<p class="gsap-ew-herobento-item-text">' . esc_html( $item['item_text'] ) . '</p>';
+                                }
+                                if ( ! empty( $item['item_button_text'] ) ) {
+                                        $card_btn_attrs = 'class="gsap-ew-herobento-item-btn"';
+                                        if ( ! empty( $item['item_button_link']['url'] ) ) {
+                                                $card_btn_attrs .= ' href="' . esc_url( $item['item_button_link']['url'] ) . '"';
+                                                if ( ! empty( $item['item_button_link']['is_external'] ) ) {
+                                                        $card_btn_attrs .= ' target="_blank"';
+                                                }
+                                                if ( ! empty( $item['item_button_link']['nofollow'] ) ) {
+                                                        $card_btn_attrs .= ' rel="nofollow"';
+                                                }
+                                        } else {
+                                                $card_btn_attrs = 'class="gsap-ew-herobento-item-btn" href="#"';
+                                        }
+                                        echo '<a ' . $card_btn_attrs . '>' . esc_html( $item['item_button_text'] ) . '</a>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
                                 }
                                 echo '</div>'; // .item-body
                                 echo '</div>'; // .item
