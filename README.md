@@ -1,8 +1,8 @@
 # GSAP Elementor Widgets
 
-Adds **10 GSAP-powered Elementor widgets** with full **no-code** controls (dropdowns, sliders, toggles) right in the Elementor panel. Built for **Elementor / Elementor Pro 3.x – 4.x**.
+Adds **11 GSAP-powered Elementor widgets** with full **no-code** controls (dropdowns, sliders, toggles) right in the Elementor panel. Built for **Elementor / Elementor Pro 3.x – 4.x**.
 
-- **Version:** 1.2.5
+- **Version:** 1.2.6
 - **Requires WordPress:** 6.0+
 - **Requires PHP:** 7.4+
 - **Requires Plugins:** Elementor (3.0.0+)
@@ -113,8 +113,22 @@ A full-screen hero (video, image or solid colour background) that shrinks and se
 - **Layout:** grid columns (2–4), hero width/height in grid cells, gap, max width, grid height
 - **Scroll length** slider — controls how long/drawn-out the shrink effect lasts
 - **Card easing** dropdown, staggered card reveal
-- Style: hero heading/sub-heading/button colours & typography, card background, corner radius, title & text colours
+- **Bento card layouts:** each card can be *Image Above Text* or *Image Fills Card* (text centred over the image), with an optional per-card image overlay tint and an optional per-card button + link
+- **Animated hero overlay:** separate *Start* (full screen) and *Final* (shrunk) overlay colours that fade as the hero shrinks — e.g. start transparent so a video plays clean, then fade a tint in
+- **Fade in text & button on scroll** toggle — hide the heading/sub-heading/button initially and fade them in as the hero shrinks
+- Style: hero heading/sub-heading/button colours & typography, card background, corner radius, card title & text **colours *and* typography**, and full card **button styling** (text/background colours, hover colours, typography, corner radius, padding) — matching the hero controls
 - Automatically disables the scroll effect for reduced-motion visitors and inside the Elementor editor (shows the final grid instead)
+
+### 11. Motion Path
+Moves an **image, icon or inline SVG** along a curved path using GSAP's MotionPathPlugin — the object can glide as the visitor scrolls, or play on its own.
+- **Moving object:** choose an Image, an Icon (Elementor icon picker) or paste inline SVG; set its size and (for icons/SVG) colour
+- **Ready-made path shapes:** Wave, Rolling Hills, Arc (rainbow), Loop (circle), S-Curve, Zig-Zag, Diagonal — or **Custom** (paste your own SVG path `d` data drawn on a 1000×500 canvas)
+- **Travel in reverse** toggle and **Rotate to follow path** toggle (great for a rocket, plane or arrow that points where it's going)
+- **Show the path line** toggle with line colour, thickness and style (solid / dashed / dotted)
+- **Trigger:** Scroll (scrub — the object moves along the path as you scroll, and back as you scroll up), On Scroll Into View, or On Page Load
+- **Duration**, **Delay**, **easing**, **Loop continuously** (with optional **yo-yo**), **Replay on every scroll**, and a **Scroll length** slider for the scrub effect
+- Style: stage height, background colour, corner radius
+- Automatically shows the object resting at the start of the path for reduced-motion visitors
 
 ---
 
@@ -139,7 +153,7 @@ A full-screen hero (video, image or solid colour background) that shrinks and se
 
 1. Edit any page with Elementor.
 2. In the widget panel, find the **GSAP Animations** category.
-3. Drag any of the 10 widgets onto your page. (The **GSAP Animations** category now appears at the very top of the widget panel for quick access.)
+3. Drag any of the 11 widgets onto your page. (The **GSAP Animations** category now appears at the very top of the widget panel for quick access.)
 4. Configure the animation entirely through the panel controls — no code required.
 5. Preview / publish. Animations fire on page load or as the section scrolls into view.
 
@@ -171,7 +185,8 @@ gsap-elementor-widgets/
 │       ├── class-icon-box-3d.php
 │       ├── class-reveal-on-scroll.php
 │       ├── class-svg-animator.php
-│       └── class-hero-bento.php
+│       ├── class-hero-bento.php
+│       └── class-motion-path.php
 └── assets/
     ├── js/
     │   └── gsap-widgets-frontend.js   All GSAP initialisation logic
@@ -195,6 +210,10 @@ Only if you enable the **Repeat On Every Scroll** toggle on that widget. Otherwi
 ---
 
 ## Changelog
+
+### 1.2.6
+- **New widget: Motion Path.** Move an image, icon or inline SVG along a curved path — a wave, rolling hills, an arc, a loop, an S-curve, a zig-zag, a diagonal, or your own custom path. It can travel as the visitor scrolls (scrub), play when scrolled into view, or play on page load (with optional looping and yo-yo). Options include *Rotate to follow path* (so a rocket/plane/arrow points where it's going), *Travel in reverse*, and a *Show the path line* toggle with colour, thickness and solid/dashed/dotted styles. Built on GSAP's MotionPathPlugin.
+- **Added text & button styling to the smaller Bento cards**, matching the hero. The Hero to Bento Scroll widget's **Card Style** section now includes **typography** for the card title and body text, plus full **button styling** — button typography, hover text/background colours, corner radius and padding — on top of the existing button colours. (No change is needed to existing pages; the new controls simply give you more options.)
 
 ### 1.2.5
 - **Big Hero to Bento Scroll upgrade — more control over the cards and hero overlay:**

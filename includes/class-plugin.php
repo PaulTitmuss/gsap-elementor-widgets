@@ -179,6 +179,7 @@ final class Plugin {
                         'class-reveal-on-scroll.php' => '\GSAP_Elementor_Widgets\Widgets\Reveal_On_Scroll',
                         'class-svg-animator.php'     => '\GSAP_Elementor_Widgets\Widgets\SVG_Animator',
                         'class-hero-bento.php'       => '\GSAP_Elementor_Widgets\Widgets\Hero_Bento',
+                        'class-motion-path.php'      => '\GSAP_Elementor_Widgets\Widgets\Motion_Path',
                 );
 
                 foreach ( $widgets as $file => $class_name ) {
@@ -233,6 +234,15 @@ final class Plugin {
                         true
                 );
 
+                // MotionPathPlugin for the Motion Path widget (depends on GSAP core).
+                wp_register_script(
+                        'gsap-motionpath',
+                        'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/MotionPathPlugin.min.js',
+                        array( 'gsap' ),
+                        '3.12.5',
+                        true
+                );
+
                 // Our frontend initialisation logic.
                 wp_register_script(
                         'gsap-ew-frontend',
@@ -267,6 +277,7 @@ final class Plugin {
                 wp_enqueue_script( 'gsap' );
                 wp_enqueue_script( 'gsap-scrolltrigger' );
                 wp_enqueue_script( 'gsap-textplugin' );
+                wp_enqueue_script( 'gsap-motionpath' );
                 wp_enqueue_script( 'gsap-ew-frontend' );
                 wp_enqueue_style( 'gsap-ew-frontend' );
         }

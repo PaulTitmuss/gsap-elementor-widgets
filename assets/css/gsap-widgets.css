@@ -784,3 +784,76 @@
                 min-height: 320px;
         }
 }
+
+
+
+/* =================================================================
+ * Motion Path
+ * ============================================================== */
+.gsap-ew-motionpath {
+        position: relative;
+        width: 100%;
+        height: 400px;
+        overflow: visible;
+}
+
+/* The SVG overlays the whole stage and holds the (optionally visible) path.
+ * preserveAspectRatio="none" makes it stretch to fill the stage so the object
+ * travels across the full width/height available. */
+.gsap-ew-motionpath-svg {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        overflow: visible;
+        pointer-events: none;
+}
+
+/* The path is invisible by default; the "Show the path line" toggle adds the
+ * .gsap-ew-motionpath--show-path class which paints it. */
+.gsap-ew-motionpath-path {
+        fill: none;
+        stroke: none;
+}
+
+.gsap-ew-motionpath--show-path .gsap-ew-motionpath-path {
+        stroke: rgba(108, 71, 255, 0.35);
+        stroke-width: 3;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        vector-effect: non-scaling-stroke;
+}
+
+.gsap-ew-motionpath--line-dashed .gsap-ew-motionpath-path {
+        stroke-dasharray: 10 12;
+}
+
+.gsap-ew-motionpath--line-dotted .gsap-ew-motionpath-path {
+        stroke-dasharray: 1 10;
+}
+
+/* The moving object. GSAP positions it via a transform, aligned to the path,
+ * so its own top/left simply start at the stage origin. */
+.gsap-ew-motionpath-object {
+        position: absolute;
+        top: 0;
+        left: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        line-height: 1;
+        will-change: transform;
+        z-index: 2;
+}
+
+.gsap-ew-motionpath-object img,
+.gsap-ew-motionpath-object svg {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+}
+
+.gsap-ew-motionpath-object i {
+        display: block;
+}

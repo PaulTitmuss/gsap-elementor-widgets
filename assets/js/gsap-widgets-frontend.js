@@ -44,6 +44,24 @@
                 _stRegistered: false,
 
                 /**
+                 * Register MotionPathPlugin if present.
+                 *
+                 * @return {boolean} True when MotionPathPlugin is registered.
+                 */
+                hasMotionPath: function () {
+                        if ( typeof window.MotionPathPlugin !== 'undefined' ) {
+                                if ( ! GSAPEW._mpRegistered ) {
+                                        window.gsap.registerPlugin( window.MotionPathPlugin );
+                                        GSAPEW._mpRegistered = true;
+                                }
+                                return true;
+                        }
+                        return false;
+                },
+
+                _mpRegistered: false,
+
+                /**
                  * Safely parse a JSON config attribute.
                  *
                  * @param {Element} el The element carrying the data-gsap attribute.
@@ -111,6 +129,7 @@
                                 'reveal-on-scroll': GSAPEW.initRevealOnScroll,
                                 'svg-animator': GSAPEW.initSvgAnimator,
                                 'hero-bento': GSAPEW.initHeroBento,
+                                'motion-path': GSAPEW.initMotionPath,
                         };
 
                         Object.keys( handlers ).forEach( function ( type ) {
@@ -1200,6 +1219,105 @@
                                 );
                         }
                 },
+
+                /* =============================================================
+                 * Motion Path
+                 * ========================================================== */
+                initMotionPath: function ( el, cfg ) {
+                        var gsap = window.gsap;
+                        var obj = el.querySelector( '.gsap-ew-motionpath-object' );
+                        var path = el.querySelector( '.gsap-ew-motionpath-path' );
+                        if ( ! obj || ! path ) {
+                                return;
+                        }
+
+                        // MotionPathPlugin is required — bail gracefully if it did not load.
+                        if ( ! GSAPEW.hasMotionPath() ) {
+                                return;
+                        }
+
+                        var trigger = cfg.trigger || 'scrub';
+                        var autoRotate = cfg.autoRotate === true;
+                        var reverse = cfg.reverse === true;
+                        var ease = cfg.easing || 'power1.inOut';
+
+                        // Aligning the object to the rendered path lets GSAP map the SVG
+                        // path coordinates onto the object's position on screen, so it
+                        // follows the visible curve at whatever size the widget renders.
+                        var motionPath = {
+                                path: path,
+                                align: path,
+                                alignOrigin: [ 0.5, 0.5 ],
+                                autoRotate: autoRotate,
+                                start: reverse ? 1 : 0,
+                                end: reverse ? 0 : 1,
+                        };
+
+                        var reduceMotion = window.matchMedia && window.matchMedia( '(prefers-reduced-motion: reduce)' ).matches;
+
+                        // Reduced motion (or no ScrollTrigger for scroll modes): simply
+                        // place the object at the start of the path without animating.
+                        if ( reduceMotion ) {
+                                gsap.set( obj, {
+                                        motionPath: {
+                                                path: path,
+                                                align: path,
+                                                alignOrigin: [ 0.5, 0.5 ],
+                                                autoRotate: autoRotate,
+                                                start: reverse ? 1 : 0,
+                                                end: reverse ? 1 : 0,
+                                        },
+                                } );
+                                return;
+                        }
+
+                        if ( 'scrub' === trigger ) {
+                                if ( ! GSAPEW.hasScrollTrigger() ) {
+                                        gsap.set( obj, { motionPath: motionPath, immediateRender: true } );
+                                        return;
+                                }
+                                var scrubLen = typeof cfg.scrubLength === 'number' ? cfg.scrubLength : 120;
+                                gsap.to( obj, {
+                                        motionPath: motionPath,
+                                        ease: 'none',
+                                        immediateRender: true,
+                                        scrollTrigger: {
+                                                trigger: el,
+                                                start: 'top 80%',
+                                                end: '+=' + ( window.innerHeight * ( scrubLen / 100 ) ),
+                                                scrub: true,
+                                                invalidateOnRefresh: true,
+                                        },
+                                } );
+                                return;
+                        }
+
+                        // "load" and "scroll" (into view) both play through once.
+                        var tweenVars = {
+                                motionPath: motionPath,
+                                duration: typeof cfg.duration === 'number' ? cfg.duration : 4,
+                                delay: typeof cfg.delay === 'number' ? cfg.delay : 0,
+                                ease: ease,
+                                immediateRender: true,
+                        };
+
+                        if ( 'load' === trigger && cfg.loop === true ) {
+                                tweenVars.repeat = -1;
+                                if ( cfg.yoyo === true ) {
+                                        tweenVars.yoyo = true;
+                                }
+                        }
+
+                        if ( 'scroll' === trigger && GSAPEW.hasScrollTrigger() ) {
+                                tweenVars.scrollTrigger = {
+                                        trigger: el,
+                                        start: 'top 80%',
+                                        toggleActions: cfg.repeat === true ? 'restart none none reset' : 'play none none none',
+                                };
+                        }
+
+                        gsap.to( obj, tweenVars );
+                },
         };
 
         // Expose the namespace for debugging / extension.
@@ -1268,6 +1386,7 @@
                                 'gsap-reveal-on-scroll',
                                 'gsap-svg-animator',
                                 'gsap-hero-bento',
+                                'gsap-motion-path',
                         ];
 
                         types.forEach( function ( type ) {

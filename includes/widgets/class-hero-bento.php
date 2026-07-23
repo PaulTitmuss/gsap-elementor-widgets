@@ -738,6 +738,112 @@ class Hero_Bento extends Widget_Base {
                         )
                 );
 
+                /* ----- Card text typography (matches the Hero) ----- */
+                $this->add_control(
+                        'card_title_typography_heading',
+                        array(
+                                'label'     => esc_html__( 'Title Text', 'gsap-elementor-widgets' ),
+                                'type'      => Controls_Manager::HEADING,
+                                'separator' => 'before',
+                        )
+                );
+
+                $this->add_group_control(
+                        Group_Control_Typography::get_type(),
+                        array(
+                                'name'     => 'card_title_typography',
+                                'selector' => '{{WRAPPER}} .gsap-ew-herobento-item-title',
+                        )
+                );
+
+                $this->add_control(
+                        'card_text_typography_heading',
+                        array(
+                                'label'     => esc_html__( 'Body Text', 'gsap-elementor-widgets' ),
+                                'type'      => Controls_Manager::HEADING,
+                                'separator' => 'before',
+                        )
+                );
+
+                $this->add_group_control(
+                        Group_Control_Typography::get_type(),
+                        array(
+                                'name'     => 'card_text_typography',
+                                'selector' => '{{WRAPPER}} .gsap-ew-herobento-item-text',
+                        )
+                );
+
+                /* ----- Card button styling (matches the Hero) ----- */
+                $this->add_control(
+                        'card_btn_style_heading',
+                        array(
+                                'label'     => esc_html__( 'Button', 'gsap-elementor-widgets' ),
+                                'type'      => Controls_Manager::HEADING,
+                                'separator' => 'before',
+                        )
+                );
+
+                $this->add_group_control(
+                        Group_Control_Typography::get_type(),
+                        array(
+                                'name'     => 'card_btn_typography',
+                                'selector' => '{{WRAPPER}} .gsap-ew-herobento-item-btn',
+                        )
+                );
+
+                $this->add_control(
+                        'card_btn_hover_color',
+                        array(
+                                'label'     => esc_html__( 'Button Text Colour (Hover)', 'gsap-elementor-widgets' ),
+                                'type'      => Controls_Manager::COLOR,
+                                'selectors' => array(
+                                        '{{WRAPPER}} .gsap-ew-herobento-item-btn:hover' => 'color: {{VALUE}};',
+                                ),
+                        )
+                );
+
+                $this->add_control(
+                        'card_btn_hover_bg_color',
+                        array(
+                                'label'     => esc_html__( 'Button Background (Hover)', 'gsap-elementor-widgets' ),
+                                'type'      => Controls_Manager::COLOR,
+                                'selectors' => array(
+                                        '{{WRAPPER}} .gsap-ew-herobento-item-btn:hover' => 'background-color: {{VALUE}};',
+                                ),
+                        )
+                );
+
+                $this->add_control(
+                        'card_btn_radius',
+                        array(
+                                'label'      => esc_html__( 'Button Corner Radius (px)', 'gsap-elementor-widgets' ),
+                                'type'       => Controls_Manager::SLIDER,
+                                'size_units' => array( 'px' ),
+                                'range'      => array(
+                                        'px' => array(
+                                                'min'  => 0,
+                                                'max'  => 999,
+                                                'step' => 1,
+                                        ),
+                                ),
+                                'selectors'  => array(
+                                        '{{WRAPPER}} .gsap-ew-herobento-item-btn' => 'border-radius: {{SIZE}}{{UNIT}};',
+                                ),
+                        )
+                );
+
+                $this->add_responsive_control(
+                        'card_btn_padding',
+                        array(
+                                'label'      => esc_html__( 'Button Padding', 'gsap-elementor-widgets' ),
+                                'type'       => Controls_Manager::DIMENSIONS,
+                                'size_units' => array( 'px', 'em' ),
+                                'selectors'  => array(
+                                        '{{WRAPPER}} .gsap-ew-herobento-item-btn' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+                                ),
+                        )
+                );
+
                 $this->end_controls_section();
         }
 
